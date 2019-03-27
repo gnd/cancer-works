@@ -27,13 +27,35 @@ class DoktorkaCzSpider(scrapy.Spider):
             print "------ SCRAPING: %s?page=%d" % (self.start_url, i+1)
             yield scrapy.Request("%s?page=%d" % (self.start_url, i+1), callback=self.parse)
 
+    def clean_text(self, text):
+        text = text.replace('<br>',' ').replace('\n',' ').replace('\r',' ')
+        text = text.replace(' , ', ', ')
+        text = text.replace(' ,',', ')
+        text = text.replace('.  ','. ')
+        text = text.replace(',', ', ').replace(',  ', ', ')
+        text = text.replace('  ',' ')
+        text = text.replace(' .','. ')
+        return text
+
+    def strip_accents(self, text):
+        try:
+            text = unicode(text, 'utf-8')
+        except (TypeError, NameError): # unicode is a default on python 3
+            pass
+        text = unicodedata.normalize('NFD', text)
+        text = text.encode('ascii', 'ignore')
+        text = text.decode("utf-8")
+        return str(text)
+
     def parse(self, response):
         texts = response.xpath('//div[@class="field-item even"]').extract()
         names = response.xpath('//span[@class="username"]').extract()
         dates = response.xpath('//div[@class="small"]').extract()
 
         for i in range(len(texts)):
-            text = texts[i].encode('utf8').replace('<div class="field-item even" property="content:encoded">','').replace('</div>','').replace('<br>',' ')
+            text = texts[i].encode('utf8').replace('<div class="field-item even" property="content:encoded">','').replace('</div>','')
+            text = self.clean_text(text)
+            text = self.strip_accents(text)
             name = names[i].encode('utf8').replace('<span class="username" xml:lang="" typeof="sioc:UserAccount" property="foaf:name" datatype="">','').replace('</span>','')
             date = dates[i].encode('utf8').replace('<div class="small"> ','').replace(' </div>','')
 

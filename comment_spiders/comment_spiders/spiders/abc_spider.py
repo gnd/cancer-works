@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import scrapy
 import MySQLdb
+import unicodedata
 
 class AbcSpider(scrapy.Spider):
     name = 'abc_spider'
@@ -27,15 +29,37 @@ class AbcSpider(scrapy.Spider):
             print "------ SCRAPING: %s/%d" % (self.start_url, i+1)
             yield scrapy.Request("%s/%d" % (self.start_url, i+1), callback=self.parse)
 
+    def clean_text(self, text):
+        text = text.replace('<br>',' ').replace('\n',' ').replace('\r',' ')
+        text = text.replace(' , ', ', ')
+        text = text.replace(' ,',', ')
+        text = text.replace('.  ','. ')
+        text = text.replace(',', ', ').replace(',  ', ', ')
+        text = text.replace('  ',' ')
+        text = text.replace(' .','. ')
+        return text
+
+    def strip_accents(self, text):
+        try:
+            text = unicode(text, 'utf-8')
+        except (TypeError, NameError): # unicode is a default on python 3
+            pass
+        text = unicodedata.normalize('NFD', text)
+        text = text.encode('ascii', 'ignore')
+        text = text.decode("utf-8")
+        return str(text)
+
     def parse(self, response):
         texts = response.xpath('//div[@class="diskuse-prispevek"]//div[@class="popis"]').extract()
         names = response.xpath('//div[@class="diskuse-prispevek"]//span[@class="jmeno"]').extract()
         dates = response.xpath('//div[@class="diskuse-prispevek"]//span[@class="datum"]').extract()
 
         for i in range(len(texts)):
-            text = texts[i].encode('utf8').replace('<div class="popis">','').replace('</div>','').replace('<br>',' ')
+            text = texts[i].encode('utf8').replace('<div class="popis">','').replace('</div>','')
+            text = self.clean_text(text)
+            text = self.strip_accents(text)
             name = names[i].encode('utf8').replace('<span class="jmeno">','').replace('</span>','')
-            date = dates[i].encode('utf8').replace('<span class="datum">','').replace('</span>','')
+            date = dates[i].encode('utf8').replace('<span class="datum">','').replace('</span>','').strip(',').strip().split()[0]
 
             # add to db
             yield {
