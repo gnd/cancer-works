@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+import re
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import MySQLdb
+import unicodedata
 
 # some variables
 dbhost = "localhost"
@@ -18,6 +20,16 @@ if (len(sys.argv) > 2):
     outfile = sys.argv[2]
 else:
     sys.exit("Usage: python flush_comments <domain> <outfile>")
+
+def strip_accents(text):
+    try:
+        text = unicode(text, 'utf-8')
+    except (TypeError, NameError): # unicode is a default on python 3
+        pass
+    text = unicodedata.normalize('NFD', text)
+    text = text.encode('ascii', 'ignore')
+    text = text.decode("utf-8")
+    return str(text)
 
 # get all comments from the db for a domain
 comments = []
@@ -36,5 +48,5 @@ db.close()
 # print all the comments into a file
 f = file(outfile, 'w')
 for comment in comments:
-    f.write("%s %s %s\n" % (comment[0], comment[1], comment[2]))
+    f.write("%s %s %s\n" % (strip_accents(comment[0]), strip_accents(comment[1]), strip_accents(comment[2])))
 f.close()

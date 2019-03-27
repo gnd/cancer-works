@@ -5,14 +5,14 @@ sys.setdefaultencoding('utf-8')
 import scrapy
 import MySQLdb
 
-class AbcSpiderSpider(scrapy.Spider):
+class AbcSpider(scrapy.Spider):
     name = 'abc_spider'
     curr_page = 1
     domain = 'http://www.abecedazdravi.cz/diskuse'
     start_url = ''
 
     def __init__(self, maxpages=0, start_url='', delay=1.0, *args, **kwargs):
-        super(AbcSpiderSpider, self).__init__(*args, **kwargs)
+        super(AbcSpider, self).__init__(*args, **kwargs)
         self.start_url = start_url
         self.maxpages = int(maxpages)
         self.dbhost = "localhost"
