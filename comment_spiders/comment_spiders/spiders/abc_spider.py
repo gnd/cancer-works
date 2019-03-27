@@ -37,6 +37,7 @@ class AbcSpider(scrapy.Spider):
         text = text.replace(',', ', ').replace(',  ', ', ')
         text = text.replace('  ',' ')
         text = text.replace(' .','. ')
+        text = re.sub('<[^<]+?>', '', text)
         return text
 
     def strip_accents(self, text):
