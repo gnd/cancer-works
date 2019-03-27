@@ -5,6 +5,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 import scrapy
 import MySQLdb
+import unicodedata
 
 class VitalionSpider(scrapy.Spider):
     name = 'vitalion'
