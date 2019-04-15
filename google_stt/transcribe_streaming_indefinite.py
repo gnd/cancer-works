@@ -130,7 +130,7 @@ class ResumableMicrophoneStream:
             yield b''.join(data)
 
 
-def listen_print_loop(responses, stream):
+def listen_print_loop(responses, stream, args):
     """Iterates through server responses and prints them.
 
     The responses passed is a generator that will block until a response
@@ -172,10 +172,11 @@ def listen_print_loop(responses, stream):
         overwrite_chars = ' ' * (num_chars_printed - len(transcript))
 
         if not result.is_final:
-            sys.stdout.write(transcript + overwrite_chars + '\r')
-            sys.stdout.flush()
+            if args.realtime:
+                sys.stdout.write(transcript + overwrite_chars + '\r')
+                sys.stdout.flush()
 
-            num_chars_printed = len(transcript)
+                num_chars_printed = len(transcript)
         else:
             print(transcript + overwrite_chars)
 
@@ -190,11 +191,18 @@ def listen_print_loop(responses, stream):
 
 
 def main():
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--lang", default="en-US", type=str, help="Speech language.")
+    parser.add_argument("--realtime", default=True, type=bool, help="Realtime transcript.")
+    args = parser.parse_args()
+
     client = speech.SpeechClient()
     config = speech.types.RecognitionConfig(
         encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
         sample_rate_hertz=SAMPLE_RATE,
-        language_code='en-US',
+        language_code=args.lang,
         max_alternatives=1,
         enable_word_time_offsets=True)
     streaming_config = speech.types.StreamingRecognitionConfig(
@@ -215,7 +223,7 @@ def main():
             responses = client.streaming_recognize(streaming_config,
                                                    requests)
             # Now, put the transcription responses to use.
-            listen_print_loop(responses, stream)
+            listen_print_loop(responses, stream, args)
 
 
 if __name__ == '__main__':
