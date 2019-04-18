@@ -40,8 +40,10 @@ class VitalionSpider(scrapy.Spider):
             if ('komunita' in names[i]):
                 name = re.sub('<[^<]+?>', '', names[i].encode('utf8').replace('<div class="user_in">\n \t \n\t\t\t<b>',''))
                 name = name.split('\n')[0]
+                name = functions.strip_accents(name)
             else:
                 name = names[i].encode('utf8').replace('<div class="user_in">','').replace('<b>','').split('<a name=')[0].strip()
+                name = functions.strip_accents(name)
             date = functions.process_date_vitalion(dates[i].encode('utf8').replace('<span class="date"><span> ','').replace('</span></span>',''))
 
             # add to db

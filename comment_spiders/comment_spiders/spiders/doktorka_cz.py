@@ -28,12 +28,15 @@ class DoktorkaCzSpider(scrapy.Spider):
         dates = response.xpath('//div[@class="small"]').extract()
 
         for i in range(len(texts)):
-            text = texts[i].encode('utf8').replace('<div class="field-item even" property="content:encoded">','').replace('</div>','')
-            text = functions.clean_text(text)
-            text = functions.strip_accents(text)
-            name = names[i].encode('utf8').replace('<span class="username" xml:lang="" typeof="sioc:UserAccount" property="foaf:name" datatype="">','').replace('</span>','')
-            date = dates[i].encode('utf8').replace('<div class="small"> ','').replace(' </div>','')
-            date = functions.process_date_doktorka(date)
+            if ('Isaac Asimov' not in texts[i].encode('utf8')):
+                text = texts[i].encode('utf8').replace('<div class="field-item even" property="content:encoded">','').replace('</div>','')
+                text = functions.clean_text(text)
+                text = functions.strip_accents(text)
+                text = text.strip("'")
+                name = names[i].encode('utf8').replace('<span class="username" xml:lang="" typeof="sioc:UserAccount" property="foaf:name" datatype="">','').replace('</span>','')
+                name = functions.strip_accents(name)
+                date = dates[i].encode('utf8').replace('<div class="small"> ','').replace(' </div>','')
+                date = functions.process_date_doktorka(date)
 
             # add to db
             yield {

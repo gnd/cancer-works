@@ -5,6 +5,24 @@ sys.setdefaultencoding('utf-8')
 import MySQLdb
 import ConfigParser
 
+def output_date(date):
+    months =   {'Leden': '01',
+                'Unor': '02',
+                'Brezen': '03',
+                'Duben': '04',
+                'Kveten': '05',
+                'Cerven': '06',
+                'Cervenec': '07',
+                'Srpen': '08',
+                'Zari': '09',
+                'Rijen': '10',
+                'Listopad': '11',
+                'Prosinec': '12'}
+    date_arr = date.split('/')
+    for name, num in months.items():
+        date_arr[1] = date_arr[1].replace( num, name )
+    return "%02d. %s %s" % (int(date_arr[0].strip('.')), date_arr[1], date_arr[2])
+
 ### load config
 settings_file = 'comment_spiders/settings_python'
 config = ConfigParser.ConfigParser()
@@ -33,7 +51,7 @@ if cur.rowcount == 0:
 else:
     for row in cur.fetchall():
         name = str(row[0])
-        date = str(row[1])
+        date = str(output_date(row[1]))
         text = str(row[2])
         comments.append([name,date,text])
 db.close()

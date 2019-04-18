@@ -33,6 +33,7 @@ class AbcSpider(scrapy.Spider):
             text = functions.clean_text(text)
             text = functions.strip_accents(text)
             name = names[i].encode('utf8').replace('<span class="jmeno">','').replace('</span>','')
+            name = functions.strip_accents(name)
             date = dates[i].encode('utf8').replace('<span class="datum">','').replace('</span>','').strip(',').strip().split()[0]
             date = functions.process_date_abc(date)
 

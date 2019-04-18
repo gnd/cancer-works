@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# run scrapy on doktorka.cz
+# run scrapy on vitalion.cz
 ###########################
 # search keyword: rakovin
 scrapy crawl vitalion -a maxpages=1 -a start_url=https://diskuse.vitalion.cz/rakovina-dutiny-ustni-701
