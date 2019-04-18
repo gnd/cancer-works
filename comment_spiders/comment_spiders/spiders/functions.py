@@ -3,6 +3,7 @@ import unicodedata
 
 def clean_text(text):
     text = text.replace('<br>',' ').replace('\n',' ').replace('\r',' ')
+    text = re.sub('\.+','.', text)
     text = text.replace(' , ', ', ')
     text = text.replace(' ,',', ')
     text = text.replace('.  ','. ')

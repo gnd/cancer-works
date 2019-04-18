@@ -15,4 +15,4 @@ scrapy crawl abc_spider -a maxpages=3 -a start_url=http://abecedazdravi.cz/disku
 scrapy crawl abc_spider -a maxpages=2 -a start_url=http://abecedazdravi.cz/diskuse/alternativni-metody-lecby/rakovina-7-5-2013-13-39 -L ERROR
 
 # output everything into doktorka.in
-python flush_comments.py 'abecedazdravi.cz' abc.in
+python flush_comments.py -d abecedazdravi.cz abc.in

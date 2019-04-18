@@ -10,4 +10,4 @@ scrapy crawl dama_cz -a maxpages=4 -a start_url=http://diskuse.dama.cz/clanek.ph
 scrapy crawl dama_cz -a maxpages=5 -a start_url=http://diskuse.dama.cz/diskuse.php?d=20376 -L ERROR
 
 # output everything into doktorka.in
-python flush_comments.py 'diskuse.dama.cz' dama.in
+python flush_comments.py -d diskuse.dama.cz dama.in

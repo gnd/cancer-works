@@ -3,6 +3,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import MySQLdb
+import argparse
 import ConfigParser
 
 def output_date(date):
@@ -36,15 +37,18 @@ db = MySQLdb.connect(host=dbhost, user=dbuser, passwd=dbpass, db=dbname)
 cur = db.cursor()
 
 # process user input
-if (len(sys.argv) > 2):
-    domain = sys.argv[1]
-    outfile = sys.argv[2]
-else:
-    sys.exit("Usage: python flush_comments <domain> <outfile>")
+parser = argparse.ArgumentParser(description='Output scraped data from domain into outfile.')
+parser.add_argument('-b', '--bare', action='store_true', help='dont output date and nickname')
+parser.add_argument('-d', '--domain', default='all', help='the domain where the data was scraped from (default: all)')
+parser.add_argument('outfile', help='name of the outfile')
+args = parser.parse_args()
 
 # get all comments from the db for a domain
 comments = []
-query = "SELECT name, date, text FROM %s WHERE domain = '%s'" % (dbtable, domain)
+if (args.domain == 'all'):
+    query = "SELECT name, date, text FROM %s" % (dbtable)
+else:
+    query = "SELECT name, date, text FROM %s WHERE domain = '%s'" % (dbtable, args.domain)
 cur.execute(query)
 if cur.rowcount == 0:
     sys.exit("Cant find comments from %s" % domain)
@@ -57,7 +61,10 @@ else:
 db.close()
 
 # print all the comments into a file
-f = file(outfile, 'w')
+f = file(args.outfile, 'w')
 for comment in comments:
-    f.write("%s %s %s\n" % (comment[0], comment[1], comment[2]))
+    if args.bare:
+        f.write("%s\n" % (comment[2]))
+    else:
+        f.write("%s %s %s\n" % (comment[0], comment[1], comment[2]))
 f.close()

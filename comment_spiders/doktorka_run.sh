@@ -81,4 +81,4 @@ scrapy crawl doktorka_cz -a maxpages=1 -a start_url=https://doktorka.cz/diskuse/
 scrapy crawl doktorka_cz -a maxpages=4 -a start_url=https://doktorka.cz/diskuse/ukrain-leci-rakovinu -L ERROR
 
 # output everything into doktorka.in
-python flush_comments.py 'diskuse.doktorka.cz' doktorka.in
+python flush_comments.py -d diskuse.doktorka.cz doktorka.in

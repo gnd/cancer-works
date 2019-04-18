@@ -56,4 +56,4 @@ scrapy crawl emimino -a maxpages=12 -a start_url=https://www.emimino.cz/diskuse/
 scrapy crawl emimino -a maxpages=3 -a start_url=https://www.emimino.cz/diskuse/rakovina-je-poznat-z-krve-153558/ -L ERROR
 
 # output everything into doktorka.in
-python flush_comments.py 'emimino.cz' emimino.in
+python flush_comments.py -d emimino.cz emimino.in

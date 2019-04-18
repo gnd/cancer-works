@@ -19,4 +19,4 @@ scrapy crawl vitalion -a maxpages=2 -a start_url=https://diskuse.vitalion.cz/bul
 scrapy crawl vitalion -a maxpages=5 -a start_url=https://diskuse.vitalion.cz/bulka-na-prsu-295 -L ERROR
 
 # output everything into doktorka.in
-python flush_comments.py 'diskuse.vitalion.cz' vitalion.in
+python flush_comments.py -d diskuse.vitalion.cz vitalion.in
