@@ -55,3 +55,7 @@ def process_date_vitalion(date):
 def process_date_dama(date):
     date_arr = date.split('.')
     return "%02d/%02d/%s" % (int(date_arr[0]), int(date_arr[1]), date_arr[2])
+
+def process_date_emimino(date):
+    date_arr = date.split('.')
+    return "%02d/%02d/%s" % (int(date_arr[0]), int(date_arr[1]), date_arr[2])
