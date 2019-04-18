@@ -1,4 +1,3 @@
 *.in
 *.pyc
 comment_spiders/settings_python
-
