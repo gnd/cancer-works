@@ -24,6 +24,7 @@ def strip_accents(text):
 
 def process_date_doktorka(date):
     date = strip_accents(date)
+    date = re.sub('<[^<]+?>', '', date)
     date = date.split('-')[0].strip()
     months =   {'Leden': '01',
                 'Unor': '02',
@@ -48,5 +49,9 @@ def process_date_abc(date):
 
 def process_date_vitalion(date):
     date = date.split()[0]
+    date_arr = date.split('.')
+    return "%02d/%02d/20%s" % (int(date_arr[0]), int(date_arr[1]), date_arr[2])
+
+def process_date_dama(date):
     date_arr = date.split('.')
     return "%02d/%02d/%s" % (int(date_arr[0]), int(date_arr[1]), date_arr[2])
