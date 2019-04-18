@@ -6,14 +6,14 @@ import scrapy
 import functions
 import unicodedata
 
-class DoktorkaCzSpider(scrapy.Spider):
+class DamaCzSpider(scrapy.Spider):
     name = 'dama_cz'
     curr_page = 0
     domain = 'diskuse.dama.cz'
     start_url = ''
 
     def __init__(self, maxpages=0, start_url="", delay=1.0, *args, **kwargs):
-        super(DoktorkaCzSpider, self).__init__(*args, **kwargs)
+        super(DamaCzSpider, self).__init__(*args, **kwargs)
         self.start_url = start_url
         self.maxpages = int(maxpages)
 
