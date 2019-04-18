@@ -41,3 +41,7 @@ def process_date_doktorka(date):
     for name, num in months.items():
         date_arr[1] = date_arr[1].replace( name, num )
     return "%02d/%s/%s" % (int(date_arr[0].strip('.')), date_arr[1], date_arr[2])
+
+def process_date_abc(date):
+    date_arr = date.split('.')
+    return "%02d/%02d/%s" % (int(date_arr[0]), int(date_arr[1]), date_arr[2])
