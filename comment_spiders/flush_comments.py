@@ -3,12 +3,17 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 import MySQLdb
+import ConfigParser
 
-# some variables
-dbhost = "localhost"
-dbname = "cnc_comments"
-dbuser = "cnc_user"
-dbpass = "cnc_pass"
+### load config
+settings_file = 'comment_spiders/settings_python'
+config = ConfigParser.ConfigParser()
+config.readfp(open(settings_file))
+dbhost = config.get('database', 'DB_HOST')
+dbuser = config.get('database', 'DB_USER')
+dbpass = config.get('database', 'DB_PASS')
+dbname = config.get('database', 'DB_NAME')
+dbtable = config.get('database', 'DB_TABLE')
 db = MySQLdb.connect(host=dbhost, user=dbuser, passwd=dbpass, db=dbname)
 cur = db.cursor()
 
@@ -21,7 +26,7 @@ else:
 
 # get all comments from the db for a domain
 comments = []
-query = "SELECT name, date, text FROM comments WHERE domain = '%s'" % domain
+query = "SELECT name, date, text FROM %s WHERE domain = '%s'" % (dbtable, domain)
 cur.execute(query)
 if cur.rowcount == 0:
     sys.exit("Cant find comments from %s" % domain)
@@ -36,5 +41,5 @@ db.close()
 # print all the comments into a file
 f = file(outfile, 'w')
 for comment in comments:
-    f.write("%s %s %s\n" % (strip_accents(comment[0]), strip_accents(comment[1]), strip_accents(comment[2])))
+    f.write("%s %s %s\n" % (comment[0], comment[1], comment[2]))
 f.close()
