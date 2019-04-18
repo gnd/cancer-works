@@ -32,7 +32,10 @@ for q in tmp_questions:
                 question = q[0:index].strip() + ' ?'
                 questions.append(question.strip().capitalize())
                 break
-            elif ((q[i].isupper() & ((q[i-1] == '(') | (q[i-1] == '/') | (q[i-1] == '.') | (q[i-1] == '!') | (q[i-1] == '?'))) | ((q[i] == ' ') & ((q[i-1] == '.') | (q[i-1] == '!') | (q[i-1] == '?'))) | (i == 0)):
+            elif ((q[i].isupper() & ((q[i-1] == '(') | (q[i-1] == '/') | (q[i-1] == '.') | (q[i-1] == '!') | (q[i-1] == '?')))
+                | ((q[i] == ' ') & ((q[i-1] == '(') | (q[i-1] == '/') | (q[i-1] == '.') | (q[i-1] == '!') | (q[i-1] == '?')))
+                | (q[i] == '.')
+                | (i == 0)):
                 question = q[i:index].strip() + ' ?'
                 questions.append(question.strip().capitalize())
                 break
