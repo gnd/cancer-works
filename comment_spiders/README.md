@@ -1,11 +1,11 @@
 ## About
 This is a collection of web spiders written in Scrapy that collects data from cancer-related discussions on several Czech health and medical forums.
 The forums are:
-    * diskuse.doktorka.cz
-    * abecedazdravi.cz/diskuse
-    * diskuse.vitalion.cz
-    * diskuze.dama.cz
-    * emimino.cz/diskuse
+   * diskuse.doktorka.cz
+   * abecedazdravi.cz/diskuse
+   * diskuse.vitalion.cz
+   * diskuze.dama.cz
+   * emimino.cz/diskuse
 
 ## Usage
 1. Install scrapy and requirements
