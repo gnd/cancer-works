@@ -2,10 +2,17 @@
 #
 # run scrapy on abecedazdravi.cz
 ################################
-scrapy crawl abc_spider -a maxpages=322 -a start_url=http://abecedazdravi.cz/diskuse/zdravotni-potize-nemoci/rakovina-slinivky-brisni
+# search keyword: rakovin
+scrapy crawl abc_spider -a maxpages=36 -a start_url=http://www.abecedazdravi.cz/diskuse/zdravotni-potize-nemoci/zkusenosti-s-lecitely-u-rakoviny
+scrapy crawl abc_spider -a maxpages=323 -a start_url=http://abecedazdravi.cz/diskuse/zdravotni-potize-nemoci/rakovina-slinivky-brisni
+scrapy crawl abc_spider -a maxpages=7 -a start_url=http://abecedazdravi.cz/diskuse/zdravotni-potize-nemoci/rakovina-a-cervena-repa
+scrapy crawl abc_spider -a maxpages=14 -a start_url=http://abecedazdravi.cz/diskuse/zdravotni-potize-nemoci/rakovina-mocoveho-mechyre
+scrapy crawl abc_spider -a maxpages=9 -a start_url=http://abecedazdravi.cz/diskuse/zdravotni-potize-nemoci/rakovina-jater
+scrapy crawl abc_spider -a maxpages=3 -a start_url=http://www.abecedazdravi.cz/diskuse/alternativni-metody-lecby/jak-na-rakovinu
+scrapy crawl abc_spider -a maxpages=3 -a start_url=http://www.abecedazdravi.cz/diskuse/zdravotni-potize-nemoci/rakovina-strev
+scrapy crawl abc_spider -a maxpages=5 -a start_url=http://abecedazdravi.cz/diskuse/zdravotni-potize-nemoci/masaz-prostaty-prevence-rakoviny
+scrapy crawl abc_spider -a maxpages=3 -a start_url=http://abecedazdravi.cz/diskuse/zdravotni-potize-nemoci/rakovina-oka
 scrapy crawl abc_spider -a maxpages=2 -a start_url=http://abecedazdravi.cz/diskuse/alternativni-metody-lecby/rakovina-7-5-2013-13-39
-scrapy crawl abc_spider -a maxpages=8 -a start_url=http://abecedazdravi.cz/diskuse/zdravotni-potize-nemoci/rakovina-jater
-scrapy crawl abc_spider -a maxpages=13 -a start_url=http://abecedazdravi.cz/diskuse/zdravotni-potize-nemoci/rakovina-mocoveho-mechyre
 
 # output everything into doktorka.in
-python flush_comments.py 'http://www.abecedazdravi.cz/diskuse' abc.in
+python flush_comments.py 'abecedazdravi.cz' abc.in
