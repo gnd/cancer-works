@@ -8,31 +8,31 @@ import ConfigParser
 
 def clean(text):
     isok = True
-    if ('maravilhosa' in text) isok = False
-    if ('affiliate' in text) isok = False
-    if ('onipeng' in text) isok = False
-    if ('zLZstatek' in text) isok = False
-    if ('cnoimg' in text) isok = False
-    if ('mediterranei' in text) isok = False
-    if ('zpracovanfd' in text) isok = False
-    if ('huebdnedk' in text) isok = False
-    if ('Nightworku' in text) isok = False
-    if ('raseekmpzena' in text) isok = False
-    if ('medicamento' in text) isok = False
-    if ('zanahoria' in text) isok = False
-    if ('pLedepedLe' in text) isok = False
-    if ('coteolersl' in text) isok = False
-    if ('psrapola' in text) isok = False
-    if ('calientito' in text) isok = False
-    if ('publikace' in text) isok = False
-    if ('babydust' in text) isok = False
-    if ('neaptli' in text) isok = False
-    if ('famc3adlia' in text) isok = False
-    if ('de9magogique' in text) isok = False
-    if ('windsurfing' in text) isok = False
-    if ('archdeacon' in text) isok = False
-    if ('Pedobabo' in text) isok = False
-    if ('Vykupujeme' in text) isok = False
+    if ('maravilhosa' in text): isok = False
+    if ('affiliate' in text): isok = False
+    if ('onipeng' in text): isok = False
+    if ('zLZstatek' in text): isok = False
+    if ('cnoimg' in text): isok = False
+    if ('mediterranei' in text): isok = False
+    if ('zpracovanfd' in text): isok = False
+    if ('huebdnedk' in text): isok = False
+    if ('Nightworku' in text): isok = False
+    if ('raseekmpzena' in text): isok = False
+    if ('medicamento' in text): isok = False
+    if ('zanahoria' in text): isok = False
+    if ('pLedepedLe' in text): isok = False
+    if ('coteolersl' in text): isok = False
+    if ('psrapola' in text): isok = False
+    if ('calientito' in text): isok = False
+    if ('publikace' in text): isok = False
+    if ('babydust' in text): isok = False
+    if ('neaptli' in text): isok = False
+    if ('famc3adlia' in text): isok = False
+    if ('de9magogique' in text): isok = False
+    if ('windsurfing' in text): isok = False
+    if ('archdeacon' in text): isok = False
+    if ('Pedobabo' in text): isok = False
+    if ('Vykupujeme' in text): isok = False
     return isok
 
 def output_date(date):
@@ -92,7 +92,7 @@ db.close()
 # print all the comments into a file
 f = file(args.outfile, 'w')
 for comment in comments:
-    if clean(comment2):
+    if clean(comment[2]):
         if args.bare:
             f.write("%s\n" % (comment[2]))
         else:
