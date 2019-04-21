@@ -1,3 +1,4 @@
 *.in
 *.pyc
+*.sql
 comment_spiders/settings_python
