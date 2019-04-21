@@ -32,7 +32,6 @@ class DoktorkaCzSpider(scrapy.Spider):
                 text = texts[i].encode('utf8').replace('<div class="field-item even" property="content:encoded">','').replace('</div>','')
                 text = functions.strip_accents(text)
                 text = functions.clean_text(text)
-                text = text.strip("'")
                 name = names[i].encode('utf8').replace('<span class="username" xml:lang="" typeof="sioc:UserAccount" property="foaf:name" datatype="">','').replace('</span>','')
                 name = functions.strip_accents(name)
                 date = dates[i].encode('utf8').replace('<div class="small"> ','').replace(' </div>','')

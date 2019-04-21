@@ -6,7 +6,7 @@ import MySQLdb
 import argparse
 import ConfigParser
 
-function clean(text):
+def clean(text):
     isok = True
     if ('maravilhosa' in text) isok = False
     if ('affiliate' in text) isok = False
@@ -33,7 +33,7 @@ function clean(text):
     if ('archdeacon' in text) isok = False
     if ('Pedobabo' in text) isok = False
     if ('Vykupujeme' in text) isok = False
-    return isok        
+    return isok
 
 def output_date(date):
     months =   {'Leden': '01',
