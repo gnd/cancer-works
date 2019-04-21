@@ -16,6 +16,22 @@ parser.add_argument('infile', help='name of the infile')
 parser.add_argument('outfile', help='name of the outfile')
 args = parser.parse_args()
 
+function clean_input(text):
+    text = re.sub('\?','.', text)
+    text = re.sub('ev\.','ev', text)
+    text = re.sub('tj\.','tj', text)
+    text = re.sub('napr\.','napr', text)
+    text = re.sub('mudr\.','mudr', text)
+    text = re.sub('mj\.','mj', text)
+    text = re.sub('Renco\.','Renco', text)
+    text = re.sub('to\.,','to', text)
+    text = re.sub('ing\.','ing', text)
+    text = re.sub('Dr\.','dr', text)
+    text = re.sub('dr\.','dr', text)
+    text = re.sub('^\?','^', text)
+    text = re.sub('Aspo\?','Aspon', text)
+    return text
+
 # extract all lines with ?
 tmp_questions = []
 tmp_answers = []
@@ -24,17 +40,12 @@ arr = f.readlines()
 for i in range(len(arr)):
     if ('?' in arr[i]):
         # replace multiple ? with one
-        tmp_questions.append(re.sub('\?+','?', arr[i]))
+        tmp_questions.append(arr[i])
         # also add potential answer
         if (i+1 < len(arr)):
-            a = re.sub('\?+','?', arr[i+1])
-            a = re.sub('\.+','.', a)
-            tmp_answers.append(re.sub('\?','.', a))
+            tmp_answers.append(clean_input(arr[i+1]))
         else:
-            a = re.sub('\?+','?', arr[i])
-            a = re.sub('\!+','!', a)
-            a = re.sub('\.+','.', a)
-            tmp_answers.append(re.sub('\?','.', a))
+            tmp_answers.append(clean_input(arr[i])))
 f.close()
 
 # extract questions from q
@@ -78,37 +89,42 @@ for q in tmp_questions:
     # shall we also look for answers ?
     if (args.answers):
         # if we found some questions
-        if (qs_found > 0):
-            a = tmp_answers[q_index].strip()
-            cap_found = False
-            beg = 0
-            end = 0
-            # search for a capital letter denoting a sentence start
-            for i in range(len(a)):
-                if (a[i].isupper()):
-                    beg = i
-                    cap_found = True
-                    break
-            # now find the end of the sentence
-            if (cap_found):
-                for i in range(beg+1,len(a)):
-                    if (a[i] == '.'):
-                        end = i
+        beg = 0
+        end = 0
+        a = tmp_answers[q_index].strip()
+        arr_a = a.split('.')
+        answers_possible = len(arr_a)-1
+        while (qs_found > 0):
+            if (answers_possible > 0):
+                cap_found = False
+                # search for a dot denoting former sentence end
+                for i in range(beg, len(a)):
+                    if (a[i].isupper()):
+                        beg = i
+                        cap_found = True
                         break
-                    if (a[i] == '!'):
-                        end = i
-                        break
-                    if (a[i].isupper() & ((a[i-1] == '.') | (a[i-1] == '!') | (a[i-1] == '?'))):
-                        end = i
-                        break
-                    if ((a[i] == ' ') & ((a[i-1] == '.') | (a[i-1] == '!') | (a[i-1] == '?'))):
-                        end = i
-                        break
-                answer = a[beg:end].strip() + '.'
-            # if we dont have a capital letter
-            else:
-                for i in range(0,len(a)):
-                    for i in range(beg,len(a)):
+                # now find the end of the sentence
+                if (cap_found):
+                    for i in range(beg+1,len(a)):
+                        if (a[i] == '.'):
+                            end = i
+                            break
+                        if (a[i] == '!'):
+                            end = i
+                            break
+                        if (a[i].isupper() & ((a[i-1] == '.') | (a[i-1] == '!') | (a[i-1] == '?'))):
+                            end = i
+                            break
+                        if ((a[i] == ' ') & ((a[i-1] == '.') | (a[i-1] == '!') | (a[i-1] == '?'))):
+                            end = i
+                            break
+                    answer = a[beg:end].strip() + '.'
+                    qs_found -= 1
+                    answers_possible -= 1
+                    beg = end+1
+                # if we dont have a capital letter
+                else:
+                    for i in range(0,len(a)):
                         if (a[i] == '.'):
                             end = i
                             break
@@ -119,10 +135,16 @@ for q in tmp_questions:
                             end = i
                             break
                     answer = a[0:end].strip() + '.'
-        # this is a bit of a hack but lets append the same answer even if we got more questions
-        for _ in range(qs_found):
-            answers.append(answer.strip().capitalize())
-            answers_full.append(a)
+                    qs_found -= 1
+                answers.append(answer.strip().capitalize())
+                answers_full.append(a)
+            else:
+                print "going to start supplemental answers, qs_found = %d" % qs_found
+                # no more answers possible so we just duplicate the last good one
+                for i in range(qs_found):
+                    answers.append(answer.strip().capitalize())
+                    answers_full.append(a)
+                    qs_found -= 1
     q_index+=1
 
 
