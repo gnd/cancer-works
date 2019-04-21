@@ -16,7 +16,7 @@ parser.add_argument('infile', help='name of the infile')
 parser.add_argument('outfile', help='name of the outfile')
 args = parser.parse_args()
 
-function clean_input(text):
+def clean_input(text):
     text = re.sub('\?','.', text)
     text = re.sub('ev\.','ev', text)
     text = re.sub('tj\.','tj', text)
@@ -45,7 +45,7 @@ for i in range(len(arr)):
         if (i+1 < len(arr)):
             tmp_answers.append(clean_input(arr[i+1]))
         else:
-            tmp_answers.append(clean_input(arr[i])))
+            tmp_answers.append(clean_input(arr[i]))
 f.close()
 
 # extract questions from q
@@ -139,7 +139,6 @@ for q in tmp_questions:
                 answers.append(answer.strip().capitalize())
                 answers_full.append(a)
             else:
-                print "going to start supplemental answers, qs_found = %d" % qs_found
                 # no more answers possible so we just duplicate the last good one
                 for i in range(qs_found):
                     answers.append(answer.strip().capitalize())
