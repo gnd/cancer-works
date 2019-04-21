@@ -2,15 +2,36 @@ import re
 import unicodedata
 
 def clean_text(text):
-    text = text.replace('<br>',' ').replace('\n',' ').replace('\r',' ')
-    text = re.sub('\.+','.', text)
-    text = text.replace(' , ', ', ')
-    text = text.replace(' ,',', ')
+    text = text.replace('<br>',' ').replace('\n',' ').replace('\r',' ') # remove linebreaks
+    text = re.sub('\.+','.', text)                                      # many dots > one dot
+    text = re.sub('\!+','!', text)                                      # many ! > one !
+    text = re.sub('\?+','?', text)                                      # many ? > one ?
+    text = re.sub('\,+',',', text)                                      # many , > one ,
+    text = re.sub('\*+','*', text)                                      # many * > one *
+    # dots
+    text = re.sub('([a-zA-Z]?)\.([a-zA-Z]+)', "\\1. \\2", text)         # Fix . at end of sentence
     text = text.replace('.  ','. ')
-    text = text.replace(',', ', ').replace(',  ', ', ')
-    text = text.replace('  ',' ')
     text = text.replace(' .','. ')
-    text = re.sub('<[^<]+?>', '', text)
+    # exclamatio marks
+    text = re.sub('([a-zA-Z]?)\!([a-zA-Z]+)', "\\1! \\2", text)         # Fix ! at end of sentence
+    text = text.replace('!  ','! ')
+    text = text.replace(' !','! ')
+    # question marks
+    text = re.sub('([a-zA-Z]?)\?([a-zA-Z]+)', "\\1? \\2", text)         # Fix ? at end of sentence
+    text = text.replace('?  ','? ')
+    text = text.replace(' ?','? ')
+    # commas
+    text = re.sub('([a-zA-Z]?)\,([a-zA-Z]+)', "\\1, \\2", text)         # Fix , at end of sentence
+    text = text.replace(',  ',', ')
+    text = text.replace(' ,',', ')
+    # spaces
+    text = re.sub('\ +',' ', text)                                      # many ' ' > one ' '
+    # remove various bordel
+    text = text.replace('"','')                                         # remove double quotes
+    text = text.replace("'",'')                                         # remove single quotes
+    text = re.sub('<[^<]+?>', '', text)                                 # Remove HTML tags
+    text = re.sub(' http.*? ',', ', text)                               # Remove http - starting addresses
+    text = re.sub(' www.*? ',', ', text)                                # Remove www - starting addresses
     return text
 
 def strip_accents(text):
