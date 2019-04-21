@@ -48,22 +48,32 @@ for q in tmp_questions:
     index = q.find('?')
     qs_found = 0
     while (index > -1):
-        for i in reversed(range(index)):
-            if (i == 0):
-                question = q[0:index].strip() + ' ?'
-                questions.append(question.strip().capitalize())
-                questions_full.append(q)
-                qs_found+=1
+        beg = 0
+        for i in reversed(range(1, index)):
+            if (((q[i] == '.') | (q[i] == '!') | (q[i] == '?')) & ((q[i+1] == ' ') & (q[i-1].isalpha()))):
+                beg = i+1
+                beg_found = True
                 break
-            elif ((q[i].isupper() & ((q[i-1] == '(') | (q[i-1] == ')') | (q[i-1] == '/') | (q[i-1] == '.') | (q[i-1] == '!') | (q[i-1] == '?')))
-                | ((q[i] == ' ') & ((q[i-1] == '(') | (q[i-1] == ')') | (q[i-1] == '/') | (q[i-1] == '.') | (q[i-1] == '!') | (q[i-1] == '?')))
-                | (q[i] == '.')
-                | (i == 0)):
-                question = q[i:index].strip() + ' ?'
-                questions.append(question.strip().capitalize())
-                questions_full.append(q)
-                qs_found+=1
-                break
+        if (not beg_found):
+            for i in reversed(range(1, index)):
+                if (((q[i] == '.') | (q[i] == '!') | (q[i] == '?')) & ((q[i+1].isalpha()) & (q[i-1].isalpha()))):
+                    beg = i+1
+                    beg_found = True
+                    break
+        if (not beg_found):
+            for i in reversed(range(1, index)):
+                if (((q[i].isupper()) | (q[i] == ' ')) & ((q[i-1] == '(') | (q[i-1] == ')') | (q[i-1] == '/') | (q[i-1] == '.') | (q[i-1] == '!') | (q[i-1] == '?'))):
+                    beg = i+1
+                    beg_found = True
+                    break
+        if (not beg_found):
+            beg = 0
+            beg_found = True
+        if (beg_found):
+            question = q[beg:index].strip() + ' ?'
+            questions.append(question.capitalize())
+            questions_full.append(q)
+            qs_found+=1
         index = q.find('?', index+1)
     # shall we also look for answers ?
     if (args.answers):
