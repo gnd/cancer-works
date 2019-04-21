@@ -30,8 +30,8 @@ class AbcSpider(scrapy.Spider):
 
         for i in range(len(texts)):
             text = texts[i].encode('utf8').replace('<div class="popis">','').replace('</div>','')
-            text = functions.clean_text(text)
             text = functions.strip_accents(text)
+            text = functions.clean_text(text)
             name = names[i].encode('utf8').replace('<span class="jmeno">','').replace('</span>','')
             name = functions.strip_accents(name)
             date = dates[i].encode('utf8').replace('<span class="datum">','').replace('</span>','').strip(',').strip().split()[0]

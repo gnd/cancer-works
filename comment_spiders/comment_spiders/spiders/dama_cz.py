@@ -29,8 +29,8 @@ class DamaCzSpider(scrapy.Spider):
 
         for i in range(len(texts)):
             text = texts[i].encode('utf8')
-            text = functions.clean_text(text)
             text = functions.strip_accents(text)
+            text = functions.clean_text(text)
             name_date = functions.clean_text(name_dates[i])
             name_date = functions.strip_accents(name_date)
             name = name_date.split()[1]

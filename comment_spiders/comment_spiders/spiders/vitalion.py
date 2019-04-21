@@ -35,8 +35,8 @@ class VitalionSpider(scrapy.Spider):
 
         for i in range(len(texts)):
             text = texts[i].encode('utf8').replace('<div class="emojione-output">\n\t\t\t\n<p>','').replace('</p>\n\n\t\t</div>','')
-            text = functions.clean_text(text)
             text = functions.strip_accents(text)
+            text = functions.clean_text(text)
             if ('komunita' in names[i]):
                 name = re.sub('<[^<]+?>', '', names[i].encode('utf8').replace('<div class="user_in">\n \t \n\t\t\t<b>',''))
                 name = name.split('\n')[0]

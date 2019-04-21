@@ -30,8 +30,8 @@ class EmiminoSpider(scrapy.Spider):
 
         for i in range(len(texts)):
             text = re.sub('<blockquote>.*?<\/blockquote>', '', texts[i], flags=re.DOTALL)
-            text = functions.clean_text(text)
             text = functions.strip_accents(text.strip())
+            text = functions.clean_text(text)
             name = re.sub('<[^<]+?>', '', names[i])
             name = functions.strip_accents(name)
             date = functions.process_date_emimino(dates[i].strip().split()[0])
