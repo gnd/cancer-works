@@ -10,10 +10,10 @@ def clean_text(text):
     text = re.sub('\*+','*', text)                                      # many * > one *
     # remove all links
     text = re.sub('<[^<]+?>', '', text)                                 # Remove HTML tags
-    text = re.sub('http.*?( |$)',', ', text)                                # Remove http - starting addresses
-    text = re.sub('www.*?( |$)',', ', text)                                 # Remove www - starting addresses
-    text = re.sub('[a-zA-Z]*\.(.*)\.php(\?)?.*?( |$)','', text)             # Remove .php containing links
-    text = re.sub('[a-zA-Z]*\.(.*)\.html(\?)?.*?( |$)','', text)            # Remove .php containing links
+    text = re.sub('http.*?( |$)',', ', text)                            # Remove http - starting addresses
+    text = re.sub('www.*?( |$)',', ', text)                             # Remove www - starting addresses
+    text = re.sub('[a-zA-Z]*\.(.*)\.php(\?)?.*?( |$)','', text)         # Remove .php containing links
+    text = re.sub('[a-zA-Z]*\.(.*)\.html(\?)?.*?( |$)','', text)        # Remove .php containing links
     # dots
     text = re.sub('([a-zA-Z]?)\.([a-zA-Z]+)', "\\1. \\2", text)         # Fix . at end of sentence
     text = text.replace('.  ','. ')
