@@ -26,15 +26,17 @@ class DamaCzSpider(scrapy.Spider):
     def parse(self, response):
         texts = response.xpath('//p[@class="na_text"]').extract()
         name_dates = response.xpath('//p[starts-with(@class,"na_jmeno")]').extract()
+        # workaround for some shitty formatting on behalf of damacz
+        padding = len(texts) - len(name_dates)
 
-        for i in range(len(texts)):
-            text = texts[i].encode('utf8')
+        for i in range(len(texts)-padding):
+            text = texts[i+padding].encode('utf8')
             text = functions.strip_accents(text)
             text = functions.clean_text(text)
-            name_date = functions.clean_text(name_dates[i])
-            name_date = functions.strip_accents(name_date)
-            name = name_date.split()[1]
-            date = name_date.split()[2]
+            name_date = functions.strip_accents(name_dates[i])
+            name_date = functions.simple_clean_text(name_date)
+            name = name_date.split()[-6:-5][0]      # lets count from the back, its more reliable
+            date = name_date.split()[-5:-4][0]      # -||-
             date = functions.process_date_dama(date)
 
             # add to db

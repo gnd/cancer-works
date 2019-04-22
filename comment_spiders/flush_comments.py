@@ -6,7 +6,7 @@ import MySQLdb
 import argparse
 import ConfigParser
 
-function clean(text):
+def clean(text):
     isok = True
     if ('maravilhosa' in text) isok = False
     if ('affiliate' in text) isok = False
