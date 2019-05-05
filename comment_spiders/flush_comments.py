@@ -177,15 +177,22 @@ cur = db.cursor()
 parser = argparse.ArgumentParser(description='Output scraped data from domain into outfile.')
 parser.add_argument('-b', '--bare', action='store_true', help='dont output date and nickname')
 parser.add_argument('-d', '--domain', default='all', help='the domain where the data was scraped from (default: all)')
+parser.add_argument('-s', '--string', default='none', help='output only comments with STRING in text or nickname')
 parser.add_argument('outfile', help='name of the outfile')
 args = parser.parse_args()
 
 # get all comments from the db for a domain
 comments = []
 if (args.domain == 'all'):
-    query = "SELECT name, date, text FROM %s" % (dbtable)
+    if (args.string != 'none'):
+        query = "SELECT name, date, text FROM %s WHERE name like '%%%s%%' OR text like '%%%s%%'" % (dbtable, args.string, args.string)
+    else:
+        query = "SELECT name, date, text FROM %s" % (dbtable)
 else:
-    query = "SELECT name, date, text FROM %s WHERE domain = '%s'" % (dbtable, args.domain)
+    if (args.string != 'none'):
+        query = "SELECT name, date, text FROM %s WHERE domain = '%s'AND (name like '%%%s%%' OR text like '%%%s%%')" % (dbtable, args.domain, args.string, args.string)
+    else:
+        query = "SELECT name, date, text FROM %s WHERE domain = '%s'" % (dbtable, args.domain)
 cur.execute(query)
 if cur.rowcount == 0:
     sys.exit("Cant find comments from %s" % domain)
@@ -204,5 +211,5 @@ for comment in comments:
         if args.bare:
             f.write("%s\n" % (comment[2]))
         else:
-            f.write("%s %s %s\n" % (comment[0], comment[1], comment[2]))
+            f.write("%s %s\n%s\n\n" % (comment[0], comment[1], comment[2]))
 f.close()
