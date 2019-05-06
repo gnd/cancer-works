@@ -13,7 +13,7 @@ def strip_diacritics(s):
 
 def main(char_rnn_ckpt_dir='charrnn/save',
         input_device=None,
-        lang='en-US',
+        lang='cz-CZ',
         next_key='figaro',
         exit_key='ananas',
         patient=False,
