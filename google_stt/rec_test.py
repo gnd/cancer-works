@@ -12,10 +12,17 @@ WAVE_OUTPUT_FILENAME = "output.wav"
 
 p = pyaudio.PyAudio()
 
+host_info = p.get_default_host_api_info()
+print "HostInfo:", host_info
+for i in range(host_info['deviceCount']):
+    print "Device %d:" % i,
+    print p.get_device_info_by_index(i)
+
 stream = p.open(format=FORMAT,
                 channels=CHANNELS,
                 rate=RATE,
                 input=True,
+                input_device_index=6,
                 frames_per_buffer=CHUNK)
 
 print("* recording")

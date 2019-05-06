@@ -31,6 +31,7 @@ from __future__ import division
 import time
 import re
 import sys
+import argparse
 
 from google.cloud import speech
 
@@ -50,12 +51,12 @@ def get_current_time():
 def duration_to_secs(duration):
     return duration.seconds + (duration.nanos / float(1e9))
 
-
 class ResumableMicrophoneStream:
     """Opens a recording stream as a generator yielding the audio chunks."""
-    def __init__(self, rate, chunk_size):
+    def __init__(self, rate, chunk_size, input_device):
         self._rate = rate
         self._chunk_size = chunk_size
+        self.input_device = input_device
         self._num_channels = 1
         self._max_replay_secs = 5
 
@@ -82,6 +83,7 @@ class ResumableMicrophoneStream:
             rate=self._rate,
             input=True,
             frames_per_buffer=self._chunk_size,
+            input_device_index=self.input_device,
             # Run the audio stream asynchronously to fill the buffer object.
             # This is necessary so that the input device's buffer doesn't
             # overflow while the calling thread makes network requests, etc.
@@ -193,9 +195,10 @@ def listen_print_loop(responses, stream, args):
 def main():
     import argparse
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description='Transcribe speech to text PoC.')
     parser.add_argument("--lang", default="en-US", type=str, help="Speech language.")
     parser.add_argument("--realtime", default=True, type=bool, help="Realtime transcript.")
+    parser.add_argument('-d', '--device', default=None, type=int, help='Set the input device to be used.')
     args = parser.parse_args()
 
     client = speech.SpeechClient()
@@ -209,7 +212,7 @@ def main():
         config=config,
         interim_results=True)
 
-    mic_manager = ResumableMicrophoneStream(SAMPLE_RATE, CHUNK_SIZE)
+    mic_manager = ResumableMicrophoneStream(SAMPLE_RATE, CHUNK_SIZE, args.device)
 
     print('Say "Quit" or "Exit" to terminate the program.')
 
