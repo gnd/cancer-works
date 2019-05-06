@@ -17,6 +17,7 @@ def main(char_rnn_ckpt_dir='charrnn/save',
         next_key='figaro',
         exit_key='ananas',
         patient=False,
+        sample_length=100,
         say_primed=True):
 
     voice = DummyVoice(lang=lang)
@@ -39,7 +40,7 @@ def main(char_rnn_ckpt_dir='charrnn/save',
             in_text = in_text.lower()
         print(in_text)
         out_text = char_rnn.sample(prime_text=in_text,
-                                    sample_len=500,
+                                    sample_len=sample_length,
                                     sampling_strategy=1)
         if not say_primed:
             out_text = out_text[len(in_text):]
