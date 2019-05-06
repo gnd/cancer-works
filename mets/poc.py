@@ -11,7 +11,8 @@ def normalize_transcripts(transcripts):
 def strip_diacritics(s):
     return unidecode.unidecode(s)
 
-def main(char_rnn_ckpt_dir='charrnn/save', 
+def main(char_rnn_ckpt_dir='charrnn/save',
+        input_device=None,
         lang='en-US',
         next_key='figaro',
         exit_key='ananas',
@@ -19,7 +20,7 @@ def main(char_rnn_ckpt_dir='charrnn/save',
         say_primed=True):
 
     voice = DummyVoice(lang=lang)
-    ortho = Orthograph(lang=lang, next_key=next_key, exit_key=exit_key)
+    ortho = Orthograph(lang=lang, next_key=next_key, exit_key=exit_key, input_device=input_device)
     char_rnn = CharRNNWrapper(ckpt_dir=char_rnn_ckpt_dir)
 
     while True:

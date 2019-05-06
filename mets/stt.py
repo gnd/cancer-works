@@ -28,7 +28,7 @@ class Orthograph():
         self.streaming_config = speech.types.StreamingRecognitionConfig(
             config=self.config,
             interim_results=True)
-        self.mic_manager = ResumableMicrophoneStream(SAMPLE_RATE, CHUNK_SIZE)
+        self.mic_manager = ResumableMicrophoneStream(SAMPLE_RATE, CHUNK_SIZE, input_device)
         self.exit_key = exit_key
         self.next_key = next_key
 
@@ -104,9 +104,10 @@ def duration_to_secs(duration):
 
 class ResumableMicrophoneStream:
     """Opens a recording stream as a generator yielding the audio chunks."""
-    def __init__(self, rate, chunk_size):
+    def __init__(self, rate, chunk_size, input_device):
         self._rate = rate
         self._chunk_size = chunk_size
+        self._input_device = input_device
         self._num_channels = 1
         self._max_replay_secs = 5
 
@@ -133,6 +134,7 @@ class ResumableMicrophoneStream:
             rate=self._rate,
             input=True,
             frames_per_buffer=self._chunk_size,
+            input_device_index=self._input_device,
             # Run the audio stream asynchronously to fill the buffer object.
             # This is necessary so that the input device's buffer doesn't
             # overflow while the calling thread makes network requests, etc.
