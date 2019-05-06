@@ -17,7 +17,7 @@ SAMPLE_RATE = 16000
 CHUNK_SIZE = int(SAMPLE_RATE / 10)  # 100ms
 
 class Orthograph():
-    def __init__(self, lang='cs-CZ', exit_key='ananas', next_key='figaro'):
+    def __init__(self, lang='cs-CZ', exit_key='ananas', next_key='figaro', input_device=None):
         self.client = speech.SpeechClient()
         self.config = speech.types.RecognitionConfig(
             encoding=speech.enums.RecognitionConfig.AudioEncoding.LINEAR16,
