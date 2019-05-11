@@ -1,5 +1,6 @@
 """ Text to Speech """
 
+import fire
 import pyttsx3
 
 class Voice():
@@ -26,3 +27,13 @@ class DummyVoice(Voice):
     def speak(self, str):
         self._engine.say(str)
         self._engine.runAndWait()
+
+
+def _main(lang='cs-CZ', rate=100):
+    voice = DummyVoice(lang=lang, rate=rate)
+    while True:
+        voice.speak(input('>>> '))
+
+
+if __name__ == "__main__":
+    fire.Fire(_main)
