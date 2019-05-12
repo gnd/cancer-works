@@ -10,7 +10,7 @@
 
 #### Running
 
-Atm, `poc.py` consists of a loop - you may speak, and what you say is transcribed trough GC's Speech API into text, until a keyword is not recognized. At this point, the connection to GC is closed and the transcribed text (except the keyword) is forwarded to the running char-rnn language model. The generated text from the language model is spoken trough a text-to-speech interface.
+Atm, `poc.py` consists of a loop - you may speak, and what you say is transcribed through GC's Speech API into text, until a keyword is not recognized. At this point, the connection to GC is closed and the transcribed text (except the keyword) is forwarded to the running char-rnn language model. The generated text from the language model is spoken through a text-to-speech interface.
 To exit the application, besides `Ctrl-C`-ing it, you can say the special killing keyword.
 
 
