@@ -30,7 +30,6 @@ def service_connection(key, mask, selector, separator, voice):
                 data.msg += msg
             else:
                 voice.speak(msg[:sep_idx])
-                print('>{}<'.format(msg[:sep_idx]))
                 data.msg += msg[sep_idx:]
         else:
             print('closing connection to', data.addr)
